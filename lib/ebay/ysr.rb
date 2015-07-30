@@ -1,28 +1,24 @@
 require "ebay/ysr/version"
 
 module Ebay
-  module Ysr
-    # Your code goes here...
-  end
+
+  class FindingApi
   require 'net/http'
   require 'json'
-  @@appId = ''
-  @@word = ''
-
-
-  def self.search
-    encode = URI.encode(@@word)
+  APPID = ''
+#GET REQUEST
+  def self.search(word)
+    encode = URI.encode(word)
     puts encode
-    @@url = "http://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.0.0&SECURITY-APPNAME=#{appId.to_s}&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&keywords=#{encode.to_s}"
-    postData = Net::HTTP.get(URI(@@url))
+    url = "http://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.0.0&SECURITY-APPNAME=#{APPID.to_s}&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&keywords=#{encode.to_s}"
+    postData = Net::HTTP.get(URI(url))
     parse = JSON.parse(postData)
     results = parse['findItemsByKeywordsResponse'][0]['searchResult']
     count = results[0]['@count']
     puts count
     gg = results
     a=0
-
-    @@items = gg[0]['item']
+    items = gg[0]['item']
     # puts items
 #    a=0
 #    @@items.each do |f|
@@ -37,8 +33,9 @@ module Ebay
 
 #      a+=1
 #    end
+    return items
 
   end
-
+end
 
 end
