@@ -1,11 +1,11 @@
 require "ebay/ysr/version"
 
 module Ebay
-
-  class FindingApi
   require 'net/http'
   require 'json'
   APPID = ''
+  class FindingApi
+
 #GET REQUEST
   def self.search(word)
     encode = URI.encode(word)
