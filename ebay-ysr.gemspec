@@ -9,7 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Syed Muhammad Yasir"]
   spec.email         = ["yasirabbaszaidi5@gmail.com"]
   spec.summary       = %q{Finding Api of Ebay}
-  spec.description   = %q{}
+  spec.description   = %q{create config/initializers/ebay.rb
+                       SET ebay app id :  Ebay::APPID = ''  }
+
   spec.homepage      = ""
   spec.license       = "MIT"
 
