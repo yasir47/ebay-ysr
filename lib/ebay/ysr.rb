@@ -27,6 +27,7 @@ module Ebay
         url = "http://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByCategory&SERVICE-VERSION=1.0.0&SECURITY-APPNAME=#{APPID.to_s}&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&categoryId=#{categoryId}"
         postData = Net::HTTP.get(URI(url))
         parse = JSON.parse(postData)
+      begin
         results = parse['findItemsByCategoryResponse'][0]['searchResult']
         count = results[0]['@count']
         puts count
@@ -34,6 +35,9 @@ module Ebay
         a=0
         items = gg[0]['item']
         return items
+      rescue => e
+        return items = "Invalid result"
+      end
       elsif word != nil && categoryId != nil
         encode = URI.encode(word)
         Rails.logger.info categoryId
@@ -41,6 +45,7 @@ module Ebay
         uri = URI.parse(url)
         postData = Net::HTTP.get(uri)
         parse = JSON.parse(postData)
+        begin
         results = parse['findItemsAdvancedResponse'][0]['searchResult']
         count = results[0]['@count']
         puts count
@@ -48,6 +53,9 @@ module Ebay
         a=0
         items = gg[0]['item']
         return items
+      rescue => e
+        return items = "Invalid result"
+      end
       else
         return nil
       end
