@@ -36,7 +36,7 @@ module Ebay
         items = gg[0]['item']
         return items
       rescue => e
-        return items = "Invalid result"
+        return items = "Invalid Category Id"
       end
       elsif word != nil && categoryId != nil
         encode = URI.encode(word)
@@ -54,7 +54,7 @@ module Ebay
         items = gg[0]['item']
         return items
       rescue => e
-        return items = "Invalid result"
+        return items = "Invalid Category Id"
       end
       else
         return nil
