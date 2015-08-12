@@ -7,37 +7,41 @@ module Ebay
   class FindingApi
 
 #GET REQUEST
-    def self.search(word=nil,categoryId=nil)
+    def self.search(word=nil, categoryId=nil)
       if categoryId == nil
         encode = URI.encode(word)
         puts encode
         url = "http://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.0.0&SECURITY-APPNAME=#{APPID.to_s}&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&keywords=#{encode.to_s}"
         postData = Net::HTTP.get(URI(url))
         parse = JSON.parse(postData)
-        results = parse['findItemsByKeywordsResponse'][0]['searchResult']
-        count = results[0]['@count']
-        puts count
-        gg = results
-        a=0
-        items = gg[0]['item']
-        return items
+        begin
+          results = parse['findItemsByKeywordsResponse'][0]['searchResult']
+          count = results[0]['@count']
+          puts count
+          gg = results
+          a=0
+          items = gg[0]['item']
+          return items
+        rescue => e
+          return items = nil
+        end
       elsif word == nil
         categoryId = categoryId
         puts categoryId
         url = "http://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByCategory&SERVICE-VERSION=1.0.0&SECURITY-APPNAME=#{APPID.to_s}&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&categoryId=#{categoryId}"
         postData = Net::HTTP.get(URI(url))
         parse = JSON.parse(postData)
-      begin
-        results = parse['findItemsByCategoryResponse'][0]['searchResult']
-        count = results[0]['@count']
-        puts count
-        gg = results
-        a=0
-        items = gg[0]['item']
-        return items
-      rescue => e
-        return items = "Invalid Category Id"
-      end
+        begin
+          results = parse['findItemsByCategoryResponse'][0]['searchResult']
+          count = results[0]['@count']
+          puts count
+          gg = results
+          a=0
+          items = gg[0]['item']
+          return items
+        rescue => e
+          return items = "Invalid Category Id"
+        end
       elsif word != nil && categoryId != nil
         encode = URI.encode(word)
         Rails.logger.info categoryId
@@ -46,16 +50,16 @@ module Ebay
         postData = Net::HTTP.get(uri)
         parse = JSON.parse(postData)
         begin
-        results = parse['findItemsAdvancedResponse'][0]['searchResult']
-        count = results[0]['@count']
-        puts count
-        gg = results
-        a=0
-        items = gg[0]['item']
-        return items
-      rescue => e
-        return items = "Invalid Category Id"
-      end
+          results = parse['findItemsAdvancedResponse'][0]['searchResult']
+          count = results[0]['@count']
+          puts count
+          gg = results
+          a=0
+          items = gg[0]['item']
+          return items
+        rescue => e
+          return items = "Invalid Category Id"
+        end
       else
         return nil
       end
